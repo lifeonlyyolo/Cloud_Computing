@@ -1,0 +1,77 @@
+﻿@model IEnumerable<WebApplication1.Models.MenuItem>
+@using Amazon.S3
+@inject IAmazonS3 _s3
+
+@{
+    Layout = "_AdminLayout";
+}
+
+@{
+    ViewData["Title"] = "Menu List";
+    const string BucketName = "cloudassignmentimagestorage";
+}
+
+<h2>MenuItem List</h2>
+<p>
+    <a asp-controller="MenuItem" asp-action="Create" class="btn btn-primary">Add New Item</a>
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Item ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var modelclass in Model)
+        {
+            // --- GENERATE URL FOR EACH IMAGE ---
+            string preSignedUrl = "";
+            if (!string.IsNullOrEmpty(modelclass.ImageUrl))
+            {
+                var request = new Amazon.S3.Model.GetPreSignedUrlRequest
+                {
+                    BucketName = BucketName,
+                    Key = modelclass.ImageUrl,
+                    Expires = DateTime.UtcNow.AddMinutes(60)
+                };
+                preSignedUrl = _s3.GetPreSignedURL(request);
+            }
+
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(preSignedUrl))
+                    {
+                        <img src="@preSignedUrl" style="width:100px; height:auto;" alt="Menu Image" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>@modelclass.ItemId</td>
+                <td>@modelclass.Name</td>
+                <td>@modelclass.Price</td>
+                <td>
+                    <a asp-controller="MenuItem" asp-action="Details" asp-route-id="@modelclass.Id">Details</a> |
+                    <a asp-controller="MenuItem"  asp-action="Edit" asp-route-id="@modelclass.Id">Edit</a> |
+                    <a asp-controller="MenuItem" asp-action="Delete" asp-route-id="@modelclass.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="admin-scope">
+    <div class="nav-container">
+        <a asp-controller="AdminHomePage" asp-action="AdminHomePage" class="btn-home">
+            <span class="icon">🏠</span> Back to Admin Dashboard
+        </a>
+    </div>
+
+</div>

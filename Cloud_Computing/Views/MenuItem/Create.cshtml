@@ -1,0 +1,45 @@
+﻿@model WebApplication1.ViewModels.MenuItemViewModel
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-form-container">
+<h2>Add New Menu Item</h2>
+
+<form asp-controller="MenuItem" asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="ItemId"></label>
+        <input asp-for="ItemId" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Category"></label>
+        <input asp-for="Category" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Upload Image</label>
+        <input asp-for="ImageFile" type="file" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+</form>
+</div>

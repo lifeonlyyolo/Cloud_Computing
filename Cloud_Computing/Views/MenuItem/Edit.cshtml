@@ -1,0 +1,39 @@
+﻿@model WebApplication1.Models.MenuItem
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-form-container">
+<h2>Edit Admin</h2>
+
+<form asp-controller="MenuItem" asp-action="Edit" method="post">
+
+    <div class="form-group">
+        <label>ItemId</label>
+        <input asp-for="ItemId" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Price</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Description</label>
+        <input asp-for="Description" type="password" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Category</label>
+        <input asp-for="Category" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-warning">Update</button>
+</form>
+</div>

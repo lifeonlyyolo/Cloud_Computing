@@ -1,0 +1,67 @@
+﻿@model WebApplication1.Models.Order
+
+<link rel="stylesheet" href="~/css/admin.css" />
+
+<div class="admin-scope">
+    <div class="profile-card">
+        <div class="profile-header">
+            <h2>Payment Details</h2>
+            <span class="badge">Order #@Model.OrderId</span>
+        </div>
+
+        <div class="profile-body">
+            <div class="info-section">
+                <label>Customer & Item</label>
+                <p><strong>@Model.CustomerName</strong> ordered <strong>@Model.ItemName</strong></p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Order ID</label>
+                    <p>@Model.OrderId</p>
+                </div>
+                <div class="info-item">
+                    <label>Customer ID</label>
+                    <p>@Model.CustomerId</p>
+                </div>
+                <div class="info-item">
+                    <label>Quantity</label>
+                    <p>@Model.Quantity</p>
+                </div>
+                <div class="info-item">
+                    <label>Size</label>
+                    <p>@Model.Size</p>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <label>Customizations</label>
+                <div class="custom-prefs">
+                    <span><strong>Ice:</strong> @Model.Ice</span> |
+                    <span><strong>Milk:</strong> @Model.Milk</span> |
+                    <span><strong>Sugar:</strong> @Model.Sugar</span>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <label>Special Notes</label>
+                <p class="description-text">@(string.IsNullOrEmpty(Model.Notes) ? "No special instructions." : Model.Notes)</p>
+            </div>
+
+            <div class="info-grid pricing-box">
+                <div class="info-item">
+                    <label>Unit Price</label>
+                    <p>RM @Model.UnitPrice</p>
+                </div>
+                <div class="info-item">
+                    <label>Total Payment</label>
+                    <p class="price-text">RM @Model.TotalPrice</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-footer">
+            <a asp-controller="Payment" asp-action="Index" class="btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

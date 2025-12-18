@@ -1,0 +1,53 @@
+﻿@model WebApplication1.Models.Payment
+
+<link rel="stylesheet" href="~/css/admin.css" />
+
+<div class="admin-scope">
+    <div class="profile-card">
+        <div class="profile-header">
+            <h2>Transaction Record</h2>
+            <span class="badge @(Model.PaymentStatus == "Completed" ? "badge-success" : "badge-warning")">
+                @Model.PaymentStatus
+            </span>
+        </div>
+
+        <div class="profile-body">
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Payment ID</label>
+                    <p>@Model.Id</p>
+                </div>
+                <div class="info-item">
+                    <label>Order ID</label>
+                    <p>@Model.OrderId</p>
+                </div>
+                <div class="info-item">
+                    <label>Processed By (Admin ID)</label>
+                    <p>@Model.AdminId</p>
+                </div>
+                <div class="info-item">
+                    <label>Payment Date</label>
+                    <p>@Model.PaymentDate.ToString("f")</p>
+                </div>
+            </div>
+
+            <div class="info-section transaction-summary">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Payment Method</label>
+                        <p>@Model.PaymentMethod</p>
+                    </div>
+                    <div class="info-item text-right">
+                        <label>Total Amount</label>
+                        <p class="price-text highlight">RM @Model.Amount</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-footer">
+            <button onclick="window.print();" class="btn-print">Print Receipt</button>
+            <a asp-controller="Payment" asp-action="Index" class="btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

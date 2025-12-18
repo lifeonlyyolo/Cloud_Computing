@@ -1,0 +1,43 @@
+﻿@model IEnumerable<WebApplication1.Models.Admin>
+@{
+    Layout = "_AdminLayout";
+}
+<h2>Admin List</h2>
+<p>
+    <a asp-controller="Admin"  asp-action="Create" class="btn btn-primary">Add New Admin</a>
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var admin in Model)
+        {
+            <tr>
+                <td>@admin.Name</td>
+                <td>@admin.Email</td>
+                <td>@admin.Role</td>
+                <td>
+                    <a asp-controller="Admin" asp-action="Details" asp-route-id="@admin.Id">Details</a> |
+                    <a asp-controller="Admin" asp-action="Edit" asp-route-id="@admin.Id">Edit</a> |
+                    <a asp-controller="Admin" asp-action="Delete" asp-route-id="@admin.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="admin-scope">
+    <div class="nav-container">
+        <a asp-controller="AdminHomePage" asp-action="AdminHomePage" class="btn-home">
+            <span class="icon">🏠</span> Back to Admin Dashboard
+        </a>
+    </div>
+
+</div>

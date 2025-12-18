@@ -1,0 +1,150 @@
+﻿@* 宣告使用 WebApplication1 的命名空間 *@
+@model dynamic
+
+@{
+    ViewData["Title"] = "Forgot Password";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/login.css">
+@* 如果你有專門的 forget.css 也可以替換，這裡預設使用 login 樣式以保持一致性 *@
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo-circle">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            </div>
+            <h2 class="login-title">Reset Password</h2>
+            <p class="login-subtitle">Enter your email address and we'll send you a link to reset your password.</p>
+        </div>
+
+        @* 顯示成功訊息 (由 TempData 或 ViewBag 傳遞) *@
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success" style="background-color: rgba(40, 167, 69, 0.2); color: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center; border: 1px solid #28a745;">
+                @ViewBag.SuccessMessage
+            </div>
+        }
+
+        @* 顯示錯誤訊息 *@
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger" style="background-color: rgba(220, 53, 69, 0.2); color: #f8d7da; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center; border: 1px solid #dc3545;">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+
+        <form method="post" action="/ForgetPassword/SendResetLink" class="login-form">
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label class="form-label">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    Email Address
+                </label>
+                <input type="email" name="email" class="form-input" placeholder="example@mail.com" required />
+            </div>
+
+            <button type="submit" class="login-button">
+                <span>Send Reset Link</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+
+            <div class="customer-section">
+                <p class="customer-text">Remember your password?</p>
+                <div class="customer-buttons">
+                    <a href="/Login/Index" class="customer-btn register">Back to Login</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="tm-video-wrapper">
+        <video autoplay muted loop id="tm-video">
+            <source src="~/video/wave-cafe-video-bg.mp4" type="video/mp4">
+        </video>
+    </div>
+</div>
+
+<style>
+    /* 這裡可以添加一些額外的微調樣式 */
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+    }
+
+    .alert {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    
+    .tm-video-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* 確保在所有內容之後 */
+        overflow: hidden;
+        background-color: black; /* 影片載入前的底色 */
+    }
+
+    /* 影片元素：強制覆蓋且置中 */
+    #tm-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: cover; /* 關鍵：確保不變形且填滿 */
+    }
+
+    /* 內容容器：需設為 relative 並提高 z-index 以蓋在影片上 */
+    .login-container, .tm-container, .full-screen-center {
+        position: relative;
+        z-index: 10;
+    }
+
+</style>
+<script src="~/js/jquery-3.4.1.min.js"></script>
+<script>
+    function setVideoSize() {
+        const vidWidth = 1920;
+        const vidHeight = 1080;
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        const tempVidWidth = windowHeight * vidWidth / vidHeight;
+        const tempVidHeight = windowWidth * vidHeight / vidWidth;
+
+        const newVidWidth = tempVidWidth > windowWidth ? tempVidWidth : windowWidth;
+        const newVidHeight = tempVidHeight > windowHeight ? tempVidHeight : windowHeight;
+
+        $('#tm-video').css({
+            'width': newVidWidth,
+            'height': newVidHeight
+        });
+    }
+
+    $(document).ready(function () {
+        setVideoSize();
+        // 監聽視窗縮放
+        window.onresize = function () {
+            setTimeout(setVideoSize, 100);
+        };
+    });
+</script>

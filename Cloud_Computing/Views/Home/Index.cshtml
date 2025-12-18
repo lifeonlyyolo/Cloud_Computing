@@ -1,0 +1,220 @@
+﻿@model IEnumerable<WebApplication1.Models.MenuItem>
+@{
+    Layout = null;
+    // 获取数据库中所有不重复的分类名称并排序
+    var categories = Model.Select(i => i.Category).Distinct().OrderBy(c => c).ToList();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave Cafe - Home</title>
+    <link rel="stylesheet" href="~/fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/tooplate-wave-cafe.css">
+    <style>
+        .btn-order {
+            background-color: #099;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            float: right;
+            margin-top: -5px;
+            cursor: pointer;
+        }
+
+            .btn-order:hover {
+                background-color: #066;
+            }
+
+        .tm-page-content {
+            display: none;
+        }
+
+        #drink {
+            display: block;
+        }
+
+        .tm-tab-content {
+            display: none;
+        }
+
+            .tm-tab-content.active {
+                display: block;
+            }
+
+        /* 修复表单输入框在黑色背景下的显示 */
+        .tm-form-control {
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="tm-container">
+        <div class="tm-row">
+            <div class="tm-left">
+                <div class="tm-left-inner">
+                    <div class="tm-site-header">
+                        <i class="fas fa-coffee fa-3x tm-site-logo"></i>
+                        <h1 class="tm-site-name">Wave Cafe</h1>
+                    </div>
+                    <nav class="tm-site-nav">
+                        <ul class="tm-site-nav-ul">
+                            <li class="tm-page-nav-item"><a href="#drink" class="tm-page-link active"><i class="fas fa-mug-hot tm-page-link-icon"></i><span>Drink Menu</span></a></li>
+                            <li class="tm-page-nav-item"><a href="#about" class="tm-page-link"><i class="fas fa-users tm-page-link-icon"></i><span>About Us</span></a></li>
+                            <li class="tm-page-nav-item"><a href="#contact" class="tm-page-link"><i class="fas fa-comments tm-page-link-icon"></i><span>Contact</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="tm-right">
+                <div style="position: absolute; top: 30px; right: 40px; z-index: 1000;">
+                    <a href="/Login/Index" style="background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 600;">
+                        Sign In <i class="fas fa-sign-in-alt"></i>
+                    </a>
+                </div>
+
+                <main class="tm-main">
+                    <div id="drink" class="tm-page-content">
+                        <nav class="tm-black-bg tm-drinks-nav">
+                            <ul>
+                                @for (int i = 0; i < categories.Count; i++)
+                                {
+                                    <li>
+                                        <a href="#" class="tm-tab-link @(i == 0 ? "active" : "")" data-id="cat-@i">@categories[i]</a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+
+                        @for (int i = 0; i < categories.Count; i++)
+                        {
+                            var currentCategory = categories[i];
+                            <div id="cat-@i" class="tm-tab-content @(i == 0 ? "active" : "")">
+                                <div class="tm-list">
+                                    @foreach (var item in Model.Where(m => m.Category == currentCategory))
+                                    {
+                                        <div class="tm-list-item">
+                                            <img src="/@item.ImageUrl" alt="@item.Name" class="tm-list-item-img" style="width:100px; height:100px; object-fit:cover;">
+                                            <div class="tm-black-bg tm-list-item-text">
+                                                <h3 class="tm-list-item-name">@item.Name<span class="tm-list-item-price">RM @item.Price.ToString("F2")</span></h3>
+                                                <p class="tm-list-item-description">
+                                                    @item.Description
+                                                    <a href="javascript:void(0);" onclick="checkLoginBeforeOrder('@item.Id')" class="btn-order">Order Now</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div id="about" class="tm-page-content">
+                        <div class="tm-black-bg tm-mb-20 tm-about-box-1">
+                            <h2 class="tm-text-primary tm-about-header">About Wave Cafe</h2>
+                            <div class="tm-list-item tm-list-item-2">
+                                <img src="/img/about-1.png" alt="Image" class="tm-list-item-img tm-list-item-img-big">
+                                <div class="tm-list-item-text-2">
+                                    <p>Wave Cafe is a one-page video background HTML CSS template from Tooplate. You can use this for your business websites.</p>
+                                    <p>You can also use this for your client websites which you get paid for your website services. Please tell your friends about us.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tm-black-bg tm-mb-20 tm-about-box-2">
+                            <div class="tm-list-item tm-list-item-2">
+                                <div class="tm-list-item-text-2">
+                                    <h2 class="tm-text-primary">How we began</h2>
+                                    <p>If you wish to support us, please contact Tooplate. Thank you. Duis bibendum erat nec ipsum consectetur sodales.</p>
+                                </div>
+                                <img src="/img/about-2.png" alt="Image" class="tm-list-item-img tm-list-item-img-big tm-img-right">
+                            </div>
+                            <p>Donec non urna elit. Quisque ut magna in dui mattis iaculis eu finibus metus. Suspendisse vel mi a lacus finibus vehicula vel ut diam.</p>
+                        </div>
+                    </div>
+
+                    <div id="contact" class="tm-page-content">
+                        <div class="tm-black-bg tm-contact-text-container">
+                            <h2 class="tm-text-primary">Contact Wave</h2>
+                            <p>Wave Cafe Template has a video background. You can use this layout for your websites. Please contact Tooplate's Facebook page. Tell your friends about our website.</p>
+                        </div>
+                        <div class="tm-black-bg tm-contact-form-container tm-align-right">
+                            <form action="" method="POST" id="contact-form">
+                                <div class="tm-form-group">
+                                    <input type="text" name="name" class="tm-form-control" placeholder="Name" required="" />
+                                </div>
+                                <div class="tm-form-group">
+                                    <input type="email" name="email" class="tm-form-control" placeholder="Email" required="" />
+                                </div>
+                                <div class="tm-form-group tm-mb-30">
+                                    <textarea rows="6" name="message" class="tm-form-control" placeholder="Message" required=""></textarea>
+                                </div>
+                                <div>
+                                    <button type="submit" class="tm-btn-primary tm-align-right">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <footer class="tm-site-footer"><p class="tm-black-bg tm-footer-text">Copyright 2025 Wave Cafe</p></footer>
+    </div>
+
+    <div class="tm-video-wrapper">
+        <video autoplay muted loop id="tm-video"><source src="/video/wave-cafe-video-bg.mp4" type="video/mp4"></video>
+    </div>
+
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script>
+        function checkLoginBeforeOrder(itemId) {
+            const isConfirmed = confirm("You must be logged in to place an order. Would you like to sign in now?");
+            if (isConfirmed) {
+                window.location.href = "/Login/Index?returnUrl=/Customer/Order?itemId=" + itemId;
+            }
+        }
+
+        function setVideoSize() {
+            const vidWidth = 1920; const vidHeight = 1080;
+            const windowWidth = window.innerWidth; const windowHeight = window.innerHeight;
+            const tempVidWidth = windowHeight * vidWidth / vidHeight;
+            const tempVidHeight = windowWidth * vidHeight / vidWidth;
+            const newVidWidth = tempVidWidth > windowWidth ? tempVidWidth : windowWidth;
+            const newVidHeight = tempVidHeight > windowHeight ? tempVidHeight : windowHeight;
+            $('#tm-video').css('width', newVidWidth).css('height', newVidHeight);
+        }
+
+        function showPage(pageId) {
+            $('.tm-page-content').hide();
+            $(pageId).fadeIn(); // 使用渐变显示效果更好
+        }
+
+        $(document).ready(function(){
+            $('.tm-page-link').click(function(event) {
+                event.preventDefault();
+                $('.tm-page-link').removeClass('active');
+                $(this).addClass('active');
+                showPage($(this).attr('href'));
+            });
+
+            $('.tm-tab-link').on('click', e => {
+                e.preventDefault();
+                $('.tm-tab-content').hide().removeClass('active');
+                $('#' + $(e.target).data('id')).show().addClass('active');
+                $('.tm-tab-link').removeClass('active');
+                $(e.target).addClass('active');
+            });
+
+            setVideoSize();
+            window.onresize = function(){ setVideoSize(); };
+        });
+    </script>
+</body>
+</html>

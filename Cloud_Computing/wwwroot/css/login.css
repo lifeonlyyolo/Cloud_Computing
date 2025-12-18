@@ -1,0 +1,421 @@
+﻿/* wwwroot/css/login.css */
+/* Wave Cafe Theme Edition */
+
+/* =========================================
+   1. 全局设置 & 背景
+   ========================================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    /* 这里尽量使用和你主页一样的背景图 */
+    /* 如果你有图片，请取消下面 background-image 的注释并填入正确路径 */
+    /* background-image: url('../images/wave-bg.jpg'); */
+    /* 备用背景：深青色海洋渐变，模拟你的主页色调 */
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1484291470158-b8f8d608850d?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
+    background-size: cover;
+    background-color: #2a4b55; /* 图片加载失败时的底色 */
+
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif; /* 匹配主页常见的无衬线字体 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff; /* 全局白字 */
+}
+
+.login-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* =========================================
+   2. 登录卡片 (黑色半透明风格)
+   ========================================= */
+.login-card {
+    /* 核心修改：深色半透明背景，模仿主页菜单卡片 */
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px); /* 毛玻璃效果，增加高级感 */
+
+    border-radius: 5px; /* 主页风格比较方正，圆角改小 */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 450px;
+    padding: 50px 40px;
+    animation: fadeIn 0.8s ease-out;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* 微弱的白边框 */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================
+   3. 头部样式
+   ========================================= */
+.login-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.logo-circle {
+    width: 70px;
+    height: 70px;
+    /* Logo背景改为青色/Teal */
+    background: #009999;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 0 20px rgba(0, 153, 153, 0.4);
+}
+
+    .logo-circle svg {
+        stroke: white;
+        width: 35px;
+        height: 35px;
+    }
+
+.login-title {
+    font-size: 28px;
+    font-weight: 300; /* 字体变细，更优雅 */
+    color: #ffffff;
+    margin: 0 0 10px 0;
+    letter-spacing: 1px;
+}
+
+.login-subtitle {
+    color: #cccccc; /* 浅灰色副标题 */
+    font-size: 14px;
+    margin: 0;
+}
+
+/* =========================================
+   4. 角色选择 (Role Selection)
+   ========================================= */
+.role-selection {
+    margin-bottom: 25px;
+}
+
+.section-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #009999; /* 青色标题 */
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.role-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.role-option {
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+}
+
+.role-radio {
+    display: none;
+}
+
+/* 角色卡片 - 默认状态 */
+.role-card {
+    background: rgba(255, 255, 255, 0.05); /* 极淡的白色背景 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.role-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+    .role-icon svg {
+        stroke: #aaa;
+        width: 20px;
+        height: 20px;
+    }
+
+.role-label {
+    font-weight: 500;
+    color: #aaa;
+    font-size: 13px;
+    transition: color 0.3s ease;
+}
+
+/* Hover 效果 */
+.role-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #009999;
+}
+
+/* 选中状态 */
+.role-radio:checked + .role-card {
+    border-color: #009999; /* 选中边框变青色 */
+    background: rgba(0, 153, 153, 0.2); /* 背景微青色 */
+    box-shadow: 0 0 15px rgba(0, 153, 153, 0.2);
+}
+
+    .role-radio:checked + .role-card .role-icon {
+        background: #009999;
+    }
+
+        .role-radio:checked + .role-card .role-icon svg {
+            stroke: white;
+        }
+
+    .role-radio:checked + .role-card .role-label {
+        color: white;
+    }
+
+/* =========================================
+   5. 表单输入框 (暗色风格)
+   ========================================= */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #009999; /* 青色标签 */
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+    .form-label svg {
+        stroke: #009999;
+        width: 16px;
+        height: 16px;
+    }
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    /* 输入框背景改为深色透明 */
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px; /* 方一点 */
+    font-size: 15px;
+    color: #fff; /* 输入文字白色 */
+    transition: all 0.3s ease;
+}
+
+    .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #009999; /* 聚焦时边框变青色 */
+        background: rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 0 2px rgba(0, 153, 153, 0.2);
+    }
+
+/* 密码切换按钮 */
+.password-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+    .password-toggle:hover {
+        color: #fff;
+    }
+
+/* =========================================
+   6. 选项 (Remember Me / Forgot PW)
+   ========================================= */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    font-size: 13px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.remember-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #666;
+    background: rgba(0,0,0,0.3);
+    cursor: pointer;
+    accent-color: #009999;
+}
+
+.forgot-link {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+    .forgot-link:hover {
+        color: #009999;
+        text-decoration: underline;
+    }
+
+/* =========================================
+   7. 按钮样式 (主页同款风格)
+   ========================================= */
+/* 主登录按钮 - 模仿主页的 "Drink Menu" 激活态 */
+.login-button {
+    width: 100%;
+    padding: 15px;
+    background: #009999; /* 实心青色 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+    .login-button:hover {
+        background: #007a7a; /* 深一点的青色 */
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(0, 153, 153, 0.3);
+    }
+
+    .login-button:disabled {
+        background: #555;
+        cursor: not-allowed;
+    }
+
+/* =========================================
+   8. 底部游客/注册区域
+   ========================================= */
+.customer-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.customer-text {
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.customer-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+/* 轮廓按钮样式 - 模仿主页未激活的菜单项 */
+.customer-button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    /* 默认样式 */
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+    .customer-button:hover {
+        border-color: #009999;
+        color: #009999;
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+/* =========================================
+   9. 错误消息
+   ========================================= */
+.validation-error {
+    display: block;
+    color: #ff6b6b; /* 稍微柔和一点的红色 */
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.error-message {
+    background: rgba(220, 53, 69, 0.2); /* 半透明红 */
+    color: #ffcccc;
+    padding: 12px;
+    border-radius: 4px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+/* 响应式 */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 30px 20px;
+        background: rgba(0, 0, 0, 0.85); /* 手机端背景深一点，保证阅读 */
+    }
+}

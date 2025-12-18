@@ -1,0 +1,278 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/login.css">
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="error-message" style="background: rgba(40, 167, 69, 0.2); color: #d4edda; border-color: rgba(40, 167, 69, 0.3);">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<style>
+    .tm-video-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* 確保在所有內容之後 */
+        overflow: hidden;
+        background-color: black; /* 影片載入前的底色 */
+    }
+
+    /* 影片元素：強制覆蓋且置中 */
+    #tm-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: cover; /* 關鍵：確保不變形且填滿 */
+    }
+
+    /* 內容容器：需設為 relative 並提高 z-index 以蓋在影片上 */
+    .login-container, .tm-container, .full-screen-center {
+        position: relative;
+        z-index: 10;
+    }
+</style>
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo-circle">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <h2 class="login-title">Welcome Back</h2>
+            <p class="login-subtitle">Sign in to your account</p>
+        </div>
+
+        <form method="post" action="/Login/Login" class="login-form">
+            @Html.AntiForgeryToken()
+
+            <div class="role-selection">
+                <label class="section-label">Select Your Role</label>
+                <div class="role-options">
+                    <label class="role-option">
+                        <input type="radio" name="Role" value="customer" class="role-radio" required />
+                        <div class="role-card">
+                            <div class="role-icon customer">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <span class="role-label">Customer</span>
+                        </div>
+                    </label>
+
+                    <label class="role-option">
+                        <input type="radio" name="Role" value="admin" class="role-radio" required />
+                        <div class="role-card">
+                            <div class="role-icon admin">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    <line x1="8" y1="11" x2="8" y2="11"></line>
+                                </svg>
+                            </div>
+                            <span class="role-label">Admin</span>
+                        </div>
+                    </label>
+                </div>
+                <span class="validation-error" id="role-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    User ID
+                </label>
+                <input type="text" name="UserId" required class="form-input" placeholder="Enter your ID" />
+                <span class="validation-error" id="userid-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    Password
+                </label>
+                <div class="password-container">
+                    <input type="password" name="Password" required class="form-input" placeholder="Enter your password" />
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+                <span class="validation-error" id="password-error"></span>
+            </div>
+
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox" class="remember-checkbox" name="rememberMe" />
+                    <span>Remember me</span>
+                </label>
+                
+            </div>
+
+            <button type="submit" class="login-button">
+                <span>Sign In</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                </svg>
+            </button>
+
+            <div class="customer-section">
+                <p class="customer-text">New User?</p>
+                <div class="customer-buttons">
+                    <a href="/Login/CusRegister" class="customer-button outline">Customer Register</a>
+                    <a href="/ForgetPassword/Index" class="customer-button outline">Forget Password?</a>
+                </div>
+            </div>
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="error-message">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+        </form>
+    </div>
+    <div class="tm-video-wrapper">
+        <video autoplay muted loop id="tm-video">
+            <source src="~/video/wave-cafe-video-bg.mp4" type="video/mp4">
+        </video>
+    </div>
+</div>
+
+<script>
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+
+    function setVideoSize() {
+        const vidWidth = 1920;
+        const vidHeight = 1080;
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        const tempVidWidth = windowHeight * vidWidth / vidHeight;
+        const tempVidHeight = windowWidth * vidHeight / vidWidth;
+
+        const newVidWidth = tempVidWidth > windowWidth ? tempVidWidth : windowWidth;
+        const newVidHeight = tempVidHeight > windowHeight ? tempVidHeight : windowHeight;
+
+        $('#tm-video').css({
+            'width': newVidWidth,
+            'height': newVidHeight
+        });
+    }
+
+    $(document).ready(function () {
+        setVideoSize();
+        // 監聽視窗縮放
+        window.onresize = function () {
+            setTimeout(setVideoSize, 100);
+        };
+    });
+
+    // 密码显示/隐藏切换
+    function togglePassword() {
+        const passwordInput = document.querySelector('input[type="password"]');
+        const passwordToggle = document.querySelector('.password-toggle');
+
+        if (passwordInput && passwordToggle) {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // 切换图标
+            if (type === 'text') {
+                passwordToggle.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                `;
+            } else {
+                passwordToggle.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                `;
+            }
+        }
+    }
+
+    // 角色卡片点击效果
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleCards = document.querySelectorAll('.role-card');
+        roleCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const radio = this.parentElement.querySelector('.role-radio');
+                if (radio) {
+                    radio.checked = true;
+                }
+            });
+        });
+
+        // 表单提交验证
+        const loginForm = document.querySelector('.login-form');
+        const loginButton = document.querySelector('.login-button');
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                const roleSelected = document.querySelector('input[name="Role"]:checked');
+                const userId = document.querySelector('input[name="UserId"]').value;
+                const password = document.querySelector('input[name="Password"]').value;
+
+                // 清除之前的错误信息
+                document.querySelectorAll('.validation-error').forEach(el => el.textContent = '');
+
+                let isValid = true;
+
+                if (!roleSelected) {
+                    document.getElementById('role-error').textContent = 'Please select your role';
+                    isValid = false;
+                }
+
+                if (!userId) {
+                    document.getElementById('userid-error').textContent = 'User ID is required';
+                    isValid = false;
+                }
+
+                if (!password) {
+                    document.getElementById('password-error').textContent = 'Password is required';
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                // 显示加载状态
+                if (loginButton) {
+                    loginButton.innerHTML = '<span>Signing In...</span>';
+                    loginButton.disabled = true;
+                }
+
+                return true;
+            });
+        }
+    });
+</script>

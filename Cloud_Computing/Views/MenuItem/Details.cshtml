@@ -1,0 +1,71 @@
+﻿@model WebApplication1.Models.MenuItem
+@using Amazon.S3
+@inject IAmazonS3 _s3
+
+@{
+    ViewData["Title"] = "MenuItem Details";
+    const string BucketName = "cloudassignmentimagestorage";
+
+    string preSignedUrl = "";
+    if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        var request = new Amazon.S3.Model.GetPreSignedUrlRequest
+        {
+            BucketName = BucketName,
+            Key = Model.ImageUrl,
+            Expires = DateTime.UtcNow.AddMinutes(60)
+        };
+        preSignedUrl = _s3.GetPreSignedURL(request);
+    }
+}
+
+<link rel="stylesheet" href="~/css/admin.css" />
+
+<div class="admin-scope">
+    <div class="profile-card">
+        <div class="profile-header">
+            <h2>Menu Item: @Model.Name</h2>
+            <span class="badge">@Model.Category</span>
+        </div>
+
+        <div class="profile-body">
+            <div class="menu-details-layout">
+                <div class="menu-image-container">
+                    @if (!string.IsNullOrEmpty(preSignedUrl))
+                    {
+                        <img src="@preSignedUrl" class="menu-img-display" alt="@Model.Name" />
+                    }
+                    else
+                    {
+                        <div class="no-image-placeholder">No Image Available</div>
+                    }
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Item ID</label>
+                        <p>@Model.ItemId</p>
+                    </div>
+                    <div class="info-item">
+                        <label>Price</label>
+                        <p class="price-text">RM @Model.Price</p>
+                    </div>
+                    <div class="info-item">
+                        <label>Category</label>
+                        <p>@Model.Category</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <label>Description</label>
+                <p class="description-text">@Model.Description</p>
+            </div>
+        </div>
+
+        <div class="profile-footer">
+            <a asp-controller="MenuItem" asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">Edit Item</a>
+            <a asp-controller="MenuItem" asp-action="Index" class="btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

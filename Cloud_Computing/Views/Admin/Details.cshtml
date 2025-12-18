@@ -1,0 +1,48 @@
+﻿@model WebApplication1.Models.Admin
+
+<link rel="stylesheet" href="~/css/admin.css" />
+
+<div class="admin-scope">
+    <div class="profile-card">
+        <div class="profile-header">
+            <h2>Admin Profile: @Model.Name</h2>
+            <span class="badge">@Model.Role</span>
+        </div>
+
+        <div class="profile-body">
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Admin ID</label>
+                    <p>@Model.AdminId</p>
+                </div>
+                <div class="info-item">
+                    <label>Email Address</label>
+                    <p>@Model.Email</p>
+                </div>
+                <div class="info-item">
+                    <label>Phone Number</label>
+                    <p>@Model.Phone</p>
+                </div>
+                <div class="info-item">
+                    <label>Salary</label>
+                    <p>@Model.Salary.ToString("C")</p>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <label>Address</label>
+                <p>@Model.Address</p>
+            </div>
+
+            <div class="info-section">
+                <label>Description</label>
+                <p class="description-text">@Model.Description</p>
+            </div>
+        </div>
+
+        <div class="profile-footer">
+            <a asp-controller="Admin" asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">Edit Information</a>
+            <a asp-controller="Admin" asp-action="Index" class="btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@model WebApplication1.Models.Customer
+
+<link rel="stylesheet" href="~/css/admin.css" />
+
+<div class="admin-scope">
+    <div class="profile-card">
+        <div class="profile-header">
+            <h2>Customer Details: @Model.Name</h2>
+            <span class="badge">Customer</span>
+        </div>
+
+        <div class="profile-body">
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Full Name</label>
+                    <p>@Model.Name</p>
+                </div>
+                <div class="info-item">
+                    <label>Email Address</label>
+                    <p>@Model.Email</p>
+                </div>
+                <div class="info-item">
+                    <label>Phone Number</label>
+                    <p>@Model.Phone</p>
+                </div>
+                <div class="info-item">
+                    <label>Password</label>
+                    <p>********</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-footer">
+            <a asp-controller="AdminCustomer" asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">Edit Customer</a>
+            <a asp-controller="AdminCustomer" asp-action="Index" class="btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

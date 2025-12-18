@@ -1,0 +1,251 @@
+﻿@model IEnumerable<WebApplication1.Models.MenuItem>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave Cafe - Menu</title>
+    <link rel="stylesheet" href="~/fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/tooplate-wave-cafe.css">
+    <style>
+        .btn-order {
+            background-color: #099;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            float: right;
+            margin-top: -5px;
+        }
+
+            .btn-order:hover {
+                background-color: #066;
+                color: white;
+            }
+
+        .btn-logout {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+
+            .btn-logout:hover {
+                background-color: #c9302c;
+                color: white;
+            }
+
+        /* === 搜索栏样式 === */
+        .search-container {
+            margin: 0 0 20px 0;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .coffee-search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #099;
+            border-radius: 5px;
+            color: white;
+            outline: none;
+            font-size: 16px;
+        }
+
+            .coffee-search-input:focus {
+                border-color: #00ffff;
+                box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+            }
+
+        #hot {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="/Login/Index" class="btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+
+    <div class="tm-container">
+        <div class="tm-row">
+            <div class="tm-left">
+                <div class="tm-left-inner">
+                    <div class="tm-site-header">
+                        <i class="fas fa-coffee fa-3x tm-site-logo"></i>
+                        <h1 class="tm-site-name">Wave Cafe</h1>
+                    </div>
+                    <nav class="tm-site-nav">
+                        <ul class="tm-site-nav-ul">
+                            <li class="tm-page-nav-item">
+                                <a href="/Customer/Index" class="tm-page-link active">
+                                    <i class="fas fa-mug-hot tm-page-link-icon"></i>
+                                    <span>Drink Menu</span>
+                                </a>
+                            </li>
+                            <li class="tm-page-nav-item">
+                                <a href="/Customer/CartList" class="tm-page-link">
+                                    <i class="fas fa-shopping-cart tm-page-link-icon"></i>
+                                    <span>Cart List</span>
+                                </a>
+                            </li>
+                            <li class="tm-page-nav-item">
+                                <a href="/Customer/BookingHistory" class="tm-page-link">
+                                    <i class="fas fa-history tm-page-link-icon"></i>
+                                    <span>Booking History</span>
+                                </a>
+                            </li>
+                            <li class="tm-page-nav-item">
+                                <a href="/Customer/Profile" class="tm-page-link">
+                                    <i class="fas fa-user tm-page-link-icon"></i>
+                                    <span>My Profile</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="tm-right">
+                <main class="tm-main">
+                    <div id="drink" class="tm-page-content">
+
+                        <div class="search-container">
+                            <input type="text" id="coffeeSearch" class="coffee-search-input"
+                                   placeholder="Search coffee by name..." onkeyup="filterCoffee()">
+                        </div>
+
+                        <nav class="tm-black-bg tm-drinks-nav">
+                            <ul>
+                                <li><a href="#" class="tm-tab-link active" data-id="cold">Iced Coffee</a></li>
+                                <li><a href="#" class="tm-tab-link" data-id="hot">Hot Coffee</a></li>
+                            </ul>
+                        </nav>
+
+                        <div id="cold" class="tm-tab-content">
+                            <div class="tm-list">
+                                @foreach (var item in Model.Where(i => i.Category == "Iced Coffee"))
+                                {
+                                    <div class="tm-list-item coffee-item">
+                                        <img src="/@item.ImageUrl" alt="@item.Name" class="tm-list-item-img" style="width:100px; height:100px; object-fit:cover;">
+                                        <div class="tm-black-bg tm-list-item-text">
+                                            <h3 class="tm-list-item-name">
+                                                @item.Name
+                                                <span class="tm-list-item-price">RM @item.Price.ToString("F2")</span>
+                                            </h3>
+                                            <p class="tm-list-item-description">
+                                                @item.Description
+                                                <a href="/Customer/Order?itemId=@item.Id" class="btn-order">Add to Cart</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div id="hot" class="tm-tab-content">
+                            <div class="tm-list">
+                                @foreach (var item in Model.Where(i => i.Category == "Hot Coffee"))
+                                {
+                                    <div class="tm-list-item coffee-item">
+                                        <img src="/@item.ImageUrl" alt="@item.Name" class="tm-list-item-img" style="width:100px; height:100px; object-fit:cover;">
+                                        <div class="tm-black-bg tm-list-item-text">
+                                            <h3 class="tm-list-item-name">
+                                                @item.Name
+                                                <span class="tm-list-item-price">RM @item.Price.ToString("F2")</span>
+                                            </h3>
+                                            <p class="tm-list-item-description">
+                                                @item.Description
+                                                <a href="/Customer/Order?itemId=@item.Id" class="btn-order">Order Now</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <footer class="tm-site-footer"><p class="tm-black-bg tm-footer-text">Copyright 2025 Wave Cafe</p></footer>
+    </div>
+
+    <div class="tm-video-wrapper">
+        <i id="tm-video-control-button" class="fas fa-pause"></i>
+        <video autoplay muted loop id="tm-video"><source src="~/video/wave-cafe-video-bg.mp4" type="video/mp4"></video>
+    </div>
+
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script>
+        // 搜索过滤逻辑
+        function filterCoffee() {
+            const input = document.getElementById('coffeeSearch');
+            const filter = input.value.toLowerCase();
+            const coffeeItems = document.querySelectorAll('.coffee-item');
+
+            coffeeItems.forEach(item => {
+                const name = item.querySelector('.tm-list-item-name').textContent.toLowerCase();
+                if (name.includes(filter)) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+
+        function openTab(evt, id) {
+            // 切换 Tab 时重置搜索框和状态
+            document.getElementById('coffeeSearch').value = "";
+            document.querySelectorAll('.coffee-item').forEach(i => i.style.display = "");
+
+            $('.tm-tab-content').hide();
+            $('#' + id).show();
+            $('.tm-tab-link').removeClass('active');
+            $(evt.currentTarget).addClass('active');
+        }
+
+        $(document).ready(function () {
+            $('.tm-tab-link').on('click', e => { e.preventDefault(); openTab(e, $(e.target).data('id')); });
+            $('.tm-tab-link.active').click();
+            setVideoSize();
+            window.onresize = function () { setTimeout(setVideoSize, 100); };
+
+            $("#tm-video-control-button").on("click", function (e) {
+                const video = document.getElementById("tm-video");
+                $(this).removeClass();
+                if (video.paused) { video.play(); $(this).addClass("fas fa-pause"); }
+                else { video.pause(); $(this).addClass("fas fa-play"); }
+            });
+        });
+
+        function setVideoSize() {
+            const vidWidth = 1920; const vidHeight = 1080;
+            const windowWidth = window.innerWidth; const windowHeight = window.innerHeight;
+            const tempVidWidth = windowHeight * vidWidth / vidHeight;
+            const tempVidHeight = windowWidth * vidHeight / vidWidth;
+            const newVidWidth = tempVidWidth > windowWidth ? tempVidWidth : windowWidth;
+            const newVidHeight = tempVidHeight > windowHeight ? tempVidHeight : windowHeight;
+            const tmVideo = $('#tm-video');
+            tmVideo.css('width', newVidWidth);
+            tmVideo.css('height', newVidHeight);
+        }
+    </script>
+</body>
+</html>

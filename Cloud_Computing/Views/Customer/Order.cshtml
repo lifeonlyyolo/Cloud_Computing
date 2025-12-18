@@ -1,0 +1,218 @@
+﻿@model WebApplication1.Models.MenuItem
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add to Cart - @Model.Name</title>
+    <link rel="stylesheet" href="~/fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/tooplate-wave-cafe.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .full-screen-center {
+            position: relative;
+            z-index: 100;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .center-card {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 40px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #555;
+            padding-bottom: 20px;
+        }
+
+        .item-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .order-form label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: #0cc;
+            font-weight: bold;
+        }
+
+        .order-form select, .order-form input, .order-form textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: #222;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .btn-confirm {
+            background-color: #099;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+            .btn-confirm:hover {
+                background-color: #0cc;
+            }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #aaa;
+            text-decoration: none;
+        }
+
+        .tm-video-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        #tm-video {
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="full-screen-center">
+        <div class="center-card">
+            <div class="item-header">
+                <img src="/@Model.ImageUrl" alt="@Model.Name" class="item-img">
+                <div>
+                    <h2 style="margin:0;">@Model.Name</h2>
+                    <p style="color: #0cc; font-size: 1.2rem; margin: 5px 0 0 0;">Base Price: RM @Model.Price.ToString("F2")</p>
+                </div>
+            </div>
+
+            <form action="/Customer/Order" method="post" class="order-form">
+                <input type="hidden" name="ItemId" value="@Model.Id" />
+
+                <label>Size (+RM 2.00 for Big)</label>
+                <select name="Size">
+                    <option value="Regular">Regular</option>
+                    <option value="Big">Big (+RM 2.00)</option>
+                </select>
+
+                <div style="display:flex; gap:10px;">
+                    @if (Model.Category != "Hot Coffee")
+                    {
+                        <div style="flex:1;">
+                            <label>Ice</label>
+                            <select name="Ice">
+                                <option>Normal Ice</option>
+                                <option>Less Ice</option>
+                                <option>No Ice</option>
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        @* 如果是熱飲，隱藏傳遞一個默認值給後端，避免後端接收到 null *@
+                        <input type="hidden" name="Ice" value="Hot/No Ice" />
+                    }
+                    <div style="flex:1;">
+                        <label>Sugar</label>
+                        <select name="Sugar">
+                            <option>Normal</option>
+                            <option>Less Sugar</option>
+                            <option>Half Sugar</option>
+                            <option>No Sugar</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label>Milk Type</label>
+                <select name="Milk">
+                    <option>Full Cream</option>
+                    <option>Oat Milk (+RM 3.00)</option>
+                    <option>Soy Milk</option>
+                </select>
+
+                
+
+                <label>Quantity</label>
+                <input type="number" name="Quantity" value="1" min="1" max="20" required />
+
+                <label>Special Notes</label>
+                <textarea name="Notes" rows="2" placeholder="Anything else?"></textarea>
+
+                <button type="submit" class="btn-confirm">
+                    <i class="fas fa-cart-plus"></i> Add to Cart
+                </button>
+
+                <a href="/Customer/Index" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Cancel & Back to Menu
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="tm-video-wrapper">
+        <video autoplay muted loop id="tm-video">
+            <source src="~/video/wave-cafe-video-bg.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function setVideoSize() {
+                const vidWidth = 1920; const vidHeight = 1080;
+                const windowWidth = window.innerWidth; const windowHeight = window.innerHeight;
+                const tempVidWidth = windowHeight * vidWidth / vidHeight;
+                const tempVidHeight = windowWidth * vidHeight / vidWidth;
+                const newVidWidth = tempVidWidth > windowWidth ? tempVidWidth : windowWidth;
+                const newVidHeight = tempVidHeight > windowHeight ? tempVidHeight : windowHeight;
+                $('#tm-video').css({'width': newVidWidth, 'height': newVidHeight});
+            }
+            setVideoSize();
+            $(window).resize(setVideoSize);
+        });
+    </script>
+</body>
+</html>

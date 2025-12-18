@@ -1,0 +1,42 @@
+﻿@model IEnumerable<WebApplication1.Models.Delivery>
+@{
+    Layout = "_AdminLayout";
+}
+<h2>Delivery List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Delivery Id</th>
+            <th>Order Id</th>
+            <th>Delivery Type</th>
+            <th>Delivery Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var modelclass in Model)
+        {
+            <tr>
+                <td>@modelclass.Id</td>
+                <td>@modelclass.OrderId</td>
+                <td>@modelclass.DeliveryType</td>
+                <td>@modelclass.DeliveryStatus</td>
+                <td>
+                    <a asp-controller="Delivery" asp-action="Details" asp-route-id="@modelclass.Id">Details</a> |
+                    <a asp-controller="Delivery" asp-action="Edit" asp-route-id="@modelclass.Id">Edit</a> |
+                    <a asp-controller="Delivery" asp-action="Delete" asp-route-id="@modelclass.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="admin-scope">
+    <div class="nav-container">
+        <a asp-controller="AdminHomePage" asp-action="AdminHomePage" class="btn-home">
+            <span class="icon">🏠</span> Back to Admin Dashboard
+        </a>
+    </div>
+
+</div>

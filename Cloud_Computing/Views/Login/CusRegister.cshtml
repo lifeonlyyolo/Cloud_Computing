@@ -1,0 +1,193 @@
+﻿@model WebApplication1.Models.Customer
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Wave Cafe</title>
+    <link rel="stylesheet" href="~/fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/tooplate-wave-cafe.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            background-color: black;
+        }
+
+        /* 修復背景：使用 fixed 確保影片固定在視窗，不隨內容滾動 */
+        .tm-video-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        #tm-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 100;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 40px;
+            border-radius: 15px;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #099;
+            font-weight: bold;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            box-sizing: border-box;
+        }
+
+            .form-input:focus {
+                border-color: #099;
+                outline: none;
+            }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background: #099;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+            .login-button:hover {
+                background: #066;
+            }
+
+        .error-msg {
+            color: #ff4444;
+            background: rgba(255,0,0,0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            border: 1px solid #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2 style="text-align:center; color:#099; margin-bottom:30px;">Create Account</h2>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="error-msg">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <p style="margin: 0;">• @error.ErrorMessage</p>
+                    }
+                </div>
+            }
+
+            <form method="post" action="/Login/CusRegister">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" name="Name" class="form-input" value="@Model?.Name" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" name="Email" class="form-input" value="@Model?.Email" placeholder="example@mail.com" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="text" name="Phone" class="form-input" value="@Model?.Phone" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password (Min 8 characters)</label>
+                    <input type="password" name="Password" class="form-input" required minlength="8" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" name="ConfirmPassword" class="form-input" required />
+                </div>
+
+                <button type="submit" class="login-button">Register</button>
+                <p style="text-align:center; margin-top:20px; font-size:14px;">
+                    Already have an account? <a href="/Login/Index" style="color:#099; text-decoration:none;">Login Here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <div class="tm-video-wrapper">
+        <video autoplay muted loop id="tm-video">
+            <source src="~/video/wave-cafe-video-bg.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script>
+        function setVideoSize() {
+            const vidWidth = 1920; const vidHeight = 1080;
+            const windowWidth = window.innerWidth; const windowHeight = window.innerHeight;
+            const tempVidWidth = windowHeight * vidWidth / vidHeight;
+            const tempVidHeight = windowWidth * vidHeight / vidWidth;
+            const newVidWidth = tempVidWidth > windowWidth ? tempVidWidth : windowWidth;
+            const newVidHeight = tempVidHeight > windowHeight ? tempVidHeight : windowHeight;
+            $('#tm-video').css('width', newVidWidth).css('height', newVidHeight);
+        }
+        $(document).ready(function () {
+            setVideoSize();
+            window.onresize = function () { setTimeout(setVideoSize, 100); };
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+﻿@model WebApplication1.Models.Order
+
+@{
+    Layout = "_AdminLayout";
+}
+<div class="admin-form-container">
+<h2>Edit Order</h2>
+
+<form asp-controller="Payment" asp-action="Edit" method="post">
+
+    <div class="form-group">
+        <label>Order</label>
+        <input asp-for="OrderId" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Order Id</label>
+        <input asp-for="CustomerId" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Customer Name</label>
+        <input asp-for="CustomerName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Item Name</label>
+        <input asp-for="ItemName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Quantity</label>
+        <input asp-for="Quantity" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Size</label>
+        <input asp-for="Size" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Ice</label>
+        <input asp-for="Ice"class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Milk</label>
+        <input asp-for="Milk" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Sugar</label>
+        <input asp-for="Sugar" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Notes</label>
+        <input asp-for="Notes"class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Unit Price</label>
+        <input asp-for="UnitPrice" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Total Price</label>
+        <input asp-for="TotalPrice" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-warning">Update</button>
+</form>
+</div>

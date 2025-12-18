@@ -1,0 +1,206 @@
+﻿@model IEnumerable<WebApplication1.Models.Order>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Wave Cafe</title>
+    <link rel="stylesheet" href="~/fontawesome/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/tooplate-wave-cafe.css">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: white;
+        }
+
+        .cart-container {
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 50px;
+        }
+
+        .cart-header {
+            border-bottom: 2px solid #099;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 2px solid #099;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-name {
+            font-size: 1.2rem;
+            color: #0cc;
+            margin: 0 0 5px 0;
+        }
+
+        .cart-item-specs {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin: 0;
+        }
+
+        .cart-summary {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+            text-align: right;
+        }
+
+        .total-amount {
+            font-size: 2rem;
+            color: #0cc;
+            font-weight: bold;
+            display: block;
+            margin: 10px 0;
+        }
+
+        .btn-checkout {
+            background-color: #099;
+            color: white;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+            .btn-checkout:hover {
+                background-color: #066;
+                box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="tm-container">
+        <div class="tm-row">
+            <div class="tm-left">
+                <div class="tm-left-inner">
+                    <div class="tm-site-header">
+                        <i class="fas fa-coffee fa-3x tm-site-logo"></i>
+                        <h1 class="tm-site-name">Wave Cafe</h1>
+                    </div>
+                    <nav class="tm-site-nav">
+                        <ul class="tm-site-nav-ul">
+                            <li class="tm-page-nav-item"><a href="/Customer/Index" class="tm-page-link"><i class="fas fa-mug-hot tm-page-link-icon"></i><span>Menu</span></a></li>
+                            <li class="tm-page-nav-item"><a href="/Customer/CartList" class="tm-page-link active"><i class="fas fa-shopping-cart tm-page-link-icon"></i><span>Cart</span></a></li>
+                            <li class="tm-page-nav-item"><a href="/Customer/BookingHistory" class="tm-page-link"><i class="fas fa-history tm-page-link-icon"></i><span>History</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="tm-right">
+                <main class="tm-main">
+                    <div class="cart-container">
+                        <div class="cart-header">
+                            <h2 style="margin:0; color:white;"><i class="fas fa-shopping-cart"></i> My Cart</h2>
+                            <span>@Model.Count() Items</span>
+                        </div>
+
+                        @if (!Model.Any())
+                        {
+                            <div class="empty-cart">
+                                <i class="fas fa-shopping-basket fa-4x" style="margin-bottom:20px;"></i>
+                                <h3>Your cart is empty.</h3>
+                                <a href="/Customer/Index" class="btn-checkout" style="display:inline-block; text-decoration:none; margin-top:20px;">Go to Menu</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="cart-list">
+                                @foreach (var item in Model)
+                                {
+                                    <div class="cart-item">
+                                        <img src="/@item.ItemImageUrl" class="cart-item-img">
+                                        <div class="cart-item-details">
+                                            <h3 class="cart-item-name">@item.ItemName</h3>
+                                            <p class="cart-item-specs">
+                                                @item.Size | @item.Sugar Sugar | @item.Ice Ice | @item.Milk
+                                            </p>
+                                            <p class="cart-item-specs">Quantity: @item.Quantity</p>
+                                        </div>
+                                        <div class="cart-item-price">RM @item.TotalPrice.ToString("F2")</div>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="cart-summary">
+                                <span style="font-size:1.2rem; color:#ccc;">Subtotal:</span>
+                                <span class="total-amount">RM @Model.Sum(i => i.TotalPrice).ToString("F2")</span>
+
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <a href="/Customer/Index" style="color:#0cc; text-decoration:none;"><i class="fas fa-plus"></i> Add More</a>
+
+                                    <form action="/Customer/ProceedToPayment" method="post">
+                                        <button type="submit" class="btn-checkout">Checkout <i class="fas fa-arrow-right"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <div class="tm-video-wrapper">
+        <video autoplay muted loop id="tm-video">
+            <source src="~/video/wave-cafe-video-bg.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script>
+        function setVideoSize() {
+            const vidWidth = 1920, vidHeight = 1080;
+            const windowWidth = window.innerWidth, windowHeight = window.innerHeight;
+            const tempVidWidth = windowHeight * vidWidth / vidHeight;
+            const tempVidHeight = windowWidth * vidHeight / vidWidth;
+            const newVidWidth = tempVidWidth > windowWidth ? tempVidWidth : windowWidth;
+            const newVidHeight = tempVidHeight > windowHeight ? tempVidHeight : windowHeight;
+            $('#tm-video').css({'width': newVidWidth, 'height': newVidHeight});
+        }
+        $(document).ready(function () { setVideoSize(); $(window).resize(setVideoSize); });
+    </script>
+</body>
+</html>

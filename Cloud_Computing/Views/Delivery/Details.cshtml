@@ -1,0 +1,43 @@
+﻿@model WebApplication1.Models.Delivery
+
+<link rel="stylesheet" href="~/css/admin.css" />
+
+<div class="admin-scope">
+    <div class="profile-card">
+        <div class="profile-header">
+            <h2>Delivery Details</h2>
+            <span class="badge">@Model.DeliveryStatus</span>
+        </div>
+
+        <div class="profile-body">
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Payment ID</label>
+                    <p>@Model.Id</p>
+                </div>
+                <div class="info-item">
+                    <label>Order ID</label>
+                    <p>@Model.OrderId</p>
+                </div>
+                <div class="info-item">
+                    <label>Delivery Type</label>
+                    <p>@Model.DeliveryType</p>
+                </div>
+                <div class="info-item">
+                    <label>Current Status</label>
+                    <p><strong>@Model.DeliveryStatus</strong></p>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <label>Shipping Address</label>
+                <p>@Model.Address</p>
+            </div>
+        </div>
+
+        <div class="profile-footer">
+            <a asp-controller="Delivery" asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">Update Status</a>
+            <a asp-controller="Delivery" asp-action="Index" class="btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

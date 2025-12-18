@@ -1,0 +1,41 @@
+﻿@model IEnumerable<WebApplication1.Models.Payment>
+@{
+    Layout = "_AdminLayout";
+}
+
+<h2>Payment List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Payment Id</th>
+            <th>Payment Date</th>
+            <th>Amount</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var modelclass in Model)
+        {
+            <tr>
+                <td>@modelclass.Id</td>
+                <td>@modelclass.PaymentDate</td>
+                <td>@modelclass.Amount</td>
+                <td>
+                    <a asp-controller="Payment" asp-action="Details" asp-route-id="@modelclass.Id">Details</a> |
+                    <a asp-controller="Payment" asp-action="Edit" asp-route-id="@modelclass.Id">Edit</a> |
+                    <a asp-controller="Payment" asp-action="Delete" asp-route-id="@modelclass.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="admin-scope">
+    <div class="nav-container">
+        <a asp-controller="AdminHomePage" asp-action="AdminHomePage" class="btn-home">
+            <span class="icon">🏠</span> Back to Admin Dashboard
+        </a>
+    </div>
+
+</div>
