@@ -1,0 +1,241 @@
+﻿/* ==========================================
+   通用基础样式 (General Styles)
+   ========================================== */
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Open Sans', sans-serif;
+    background-color: black;
+    color: white;
+}
+
+/* 视频背景容器 */
+.tm-video-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+#tm-video {
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 全屏居中布局容器 */
+.full-screen-center {
+    position: relative;
+    z-index: 100;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 基础卡片样式 */
+.center-card, .profile-box, .invoice-card, .cart-container {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 40px;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* ==========================================
+   菜单页 (Index.cshtml) & 搜索样式
+   ========================================== */
+.btn-order {
+    background-color: #099;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    float: right;
+    margin-top: -5px;
+}
+
+    .btn-order:hover {
+        background-color: #066;
+        color: white;
+    }
+
+.btn-logout {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #d9534f;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    z-index: 1000;
+    transition: background-color 0.3s;
+}
+
+.search-container {
+    margin: 0 0 20px 0;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+.coffee-search-input {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #099;
+    border-radius: 5px;
+    color: white;
+    outline: none;
+    font-size: 16px;
+}
+
+/* ==========================================
+   订单/表单样式 (Order, Profile, Payment)
+   ========================================== */
+.order-form label, .form-group label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    color: #0cc;
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.order-form select, .order-form input, .order-form textarea, .form-control {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    background: #222;
+    color: white;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.btn-confirm, .btn-save, .btn-pay, .btn-checkout {
+    background-color: #099;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+    .btn-confirm:hover, .btn-pay:hover, .btn-checkout:hover {
+        background-color: #0cc;
+    }
+
+/* ==========================================
+   购物车样式 (CartList.cshtml)
+   ========================================== */
+.cart-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.cart-item-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 2px solid #099;
+}
+
+.total-amount {
+    font-size: 2rem;
+    color: #0cc;
+    font-weight: bold;
+}
+
+/* ==========================================
+   历史记录与表格 (BookingHistory.cshtml)
+   ========================================== */
+.history-box {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.filter-select {
+    min-width: 180px;
+    background-color: #333;
+    color: white;
+    border: 1px solid #099;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th {
+    background: #099;
+    color: white;
+    padding: 15px;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #444;
+}
+
+/* ==========================================
+   收据与打印样式 (PaymentSuccess.cshtml)
+   ========================================== */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .tm-video-wrapper, .btn-group {
+        display: none !important;
+    }
+
+    .center-card, .center-card * {
+        visibility: visible;
+        color: black !important;
+        background: white !important;
+        box-shadow: none !important;
+    }
+
+    .center-card {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}

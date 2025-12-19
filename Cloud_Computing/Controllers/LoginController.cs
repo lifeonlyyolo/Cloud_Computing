@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using WebApplication1.Models;
+using WebApplication1.Filters;
 
 namespace WebApplication1.Controllers
 {
@@ -19,7 +20,6 @@ namespace WebApplication1.Controllers
         }
 
         public IActionResult Index() => View();
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(string Role, string UserId, string Password, string returnUrl)
@@ -34,7 +34,6 @@ namespace WebApplication1.Controllers
 
                 if (Role == "customer")
                 {
-                    // 從 Customers 表驗證
                     var customer = _context.Customers.FirstOrDefault(u => u.Email == UserId && u.Password == Password);
 
                     if (customer != null)
@@ -46,14 +45,23 @@ namespace WebApplication1.Controllers
                         if (!string.IsNullOrEmpty(returnUrl)) return Redirect(returnUrl);
                         return RedirectToAction("Index", "Customer");
                     }
-                    ViewBag.ErrorMessage = "Invalid email or password.";
                 }
-                else if (Role == "admin" && UserId == "admin@test.com" && Password == "123")
+                else if (Role == "admin")
                 {
-                    HttpContext.Session.SetString("UserRole", "admin");
-                    return RedirectToAction("Index", "AdminHomePage");
+                    var admin = _context.Admins.FirstOrDefault(u => u.Email == UserId && u.Password == Password);
+
+                    if (admin != null)
+                    {
+                        HttpContext.Session.SetString("UserEmail", admin.Email);
+                        HttpContext.Session.SetString("UserName", admin.Name);
+                        HttpContext.Session.SetString("UserRole", "admin");
+
+                        if (!string.IsNullOrEmpty(returnUrl)) return Redirect(returnUrl);
+                        return RedirectToAction("Index", "AdminHomePage");
+                    }
                 }
 
+                ViewBag.ErrorMessage = "Invalid email or password.";
                 return View("Index");
             }
             catch (Exception ex)
@@ -63,39 +71,32 @@ namespace WebApplication1.Controllers
                 return View("Index");
             }
         }
-
         public IActionResult CusRegister() => View();
 
 
 
 
-[HttpPost]
-public IActionResult CusRegister(Customer model, string ConfirmPassword)
+        [HttpPost]
+        public IActionResult CusRegister(Customer model, string ConfirmPassword)
         {
-            // 1. 验证密码长度 (至少 8 位)
             if (string.IsNullOrEmpty(model.Password) || model.Password.Length < 8)
             {
                 ModelState.AddModelError("Password", "Password must be at least 8 characters long.");
                 return View(model);
             }
 
-            // 2. 验证两次密码是否一致
             if (model.Password != ConfirmPassword)
             {
                 ModelState.AddModelError("ConfirmPassword", "Passwords do not match.");
                 return View(model);
             }
 
-            // --- 新增代码：验证 Name 是否已存在 ---
             bool nameExists = _context.Customers.Any(c => c.Name == model.Name);
             if (nameExists)
             {
                 ModelState.AddModelError("Name", "This name is already taken. Please choose another one.");
                 return View(model);
             }
-            // ------------------------------------
-
-            // 3. 验证 Email 是否已存在
             bool emailExists = _context.Customers.Any(c => c.Email == model.Email);
             if (emailExists)
             {
@@ -103,7 +104,6 @@ public IActionResult CusRegister(Customer model, string ConfirmPassword)
                 return View(model);
             }
 
-            // 4. 自动生成 CustomerId (CUS001, CUS002...)
             var lastCustomer = _context.Customers
                 .OrderByDescending(c => c.Id)
                 .FirstOrDefault();
@@ -120,7 +120,6 @@ public IActionResult CusRegister(Customer model, string ConfirmPassword)
 
             model.CustomerId = newCusId;
 
-            // 5. 保存到数据库
             _context.Customers.Add(model);
             _context.SaveChanges();
 

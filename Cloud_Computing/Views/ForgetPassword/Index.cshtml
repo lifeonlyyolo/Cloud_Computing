@@ -1,13 +1,11 @@
-﻿@* 宣告使用 WebApplication1 的命名空間 *@
-@model dynamic
+﻿@model dynamic
 
 @{
     ViewData["Title"] = "Forgot Password";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="stylesheet" href="~/css/login.css">
-@* 如果你有專門的 forget.css 也可以替換，這裡預設使用 login 樣式以保持一致性 *@
+<link rel="stylesheet" href="~/css/Login/login.css">
 
 <div class="login-container">
     <div class="login-card">
@@ -21,7 +19,6 @@
             <p class="login-subtitle">Enter your email address and we'll send you a link to reset your password.</p>
         </div>
 
-        @* 顯示成功訊息 (由 TempData 或 ViewBag 傳遞) *@
         @if (ViewBag.SuccessMessage != null)
         {
             <div class="alert alert-success" style="background-color: rgba(40, 167, 69, 0.2); color: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center; border: 1px solid #28a745;">
@@ -29,7 +26,6 @@
             </div>
         }
 
-        @* 顯示錯誤訊息 *@
         @if (ViewBag.ErrorMessage != null)
         {
             <div class="alert alert-danger" style="background-color: rgba(220, 53, 69, 0.2); color: #f8d7da; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center; border: 1px solid #dc3545;">
@@ -88,7 +84,7 @@
         margin-bottom: 15px;
     }
 
-    
+
     .tm-video-wrapper {
         position: fixed;
         top: 0;

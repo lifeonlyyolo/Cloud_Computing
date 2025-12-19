@@ -1,0 +1,81 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.full-screen-center {
+    position: relative;
+    z-index: 100;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.center-card {
+    width: 100%;
+    max-width: 450px;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 40px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+}
+
+.pay-option {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #444;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.pay-radio {
+    transform: scale(1.3);
+    margin-right: 15px;
+    accent-color: #009999;
+}
+
+/* 模拟输入框样式 */
+.input-group {
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+    .input-group input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 8px;
+        background: #222;
+        border: 1px solid #555;
+        color: white;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+.btn-pay {
+    width: 100%;
+    padding: 15px;
+    background: #009999;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+    .btn-pay:hover {
+        background: #007a7a;
+    }

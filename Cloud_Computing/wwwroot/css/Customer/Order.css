@@ -1,0 +1,102 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.full-screen-center {
+    position: relative;
+    z-index: 100;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.center-card {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 40px;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.item-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #555;
+    padding-bottom: 20px;
+}
+
+.item-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.order-form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #0cc;
+    font-weight: bold;
+}
+
+.order-form select, .order-form input, .order-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background: #222;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.btn-confirm {
+    background-color: #099;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+    .btn-confirm:hover {
+        background-color: #0cc;
+    }
+
+.btn-back {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #aaa;
+    text-decoration: none;
+}
+
+.tm-video-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+#tm-video {
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+}
